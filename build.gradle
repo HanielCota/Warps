@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id "io.papermc.paperweight.userdev" version "1.5.5"
+    id("xyz.jpenilla.run-paper") version "2.1.0"
+}
+
+group = 'com.ankares'
+version = '1.0-SNAPSHOT'
+tasks.build.dependsOn 'shadowJar'
+
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven { url = "https://repo.aikar.co/content/groups/aikar/" }
+}
+
+dependencies {
+    //paperspigot nms
+    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
+
+    //database mysql
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+
+    //caffeine cache
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+
+    //command-framework
+    implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
+
+    //annotations processor
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+    sourceCompatibility = 17
+}
+
+// Configure Shadow JAR task
+shadowJar {
+    relocate 'co.aikar.commands', 'com.ankares.ankareswarps.commands'
+    relocate 'co.aikar.locales', 'com.ankares.ankareswarps.locales'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+        }
+    }
+
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.compilerArgs = ["--release", targetJavaVersion.toString()]
+    }
+}
+
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

@@ -1,0 +1,4 @@
+name: AnkaresWarps
+version: '${version}'
+main: com.ankares.ankareswarps.WarpPlugin
+api-version: '1.20'
