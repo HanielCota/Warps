@@ -5,6 +5,7 @@ import com.ankares.ankareswarps.cache.PlayerDataCacheProvider;
 import com.ankares.ankareswarps.commands.*;
 import com.ankares.ankareswarps.external.fastinv.FastInvManager;
 import com.ankares.ankareswarps.locations.LocationManager;
+import com.ankares.ankareswarps.manager.CooldownManager;
 import com.ankares.ankareswarps.manager.DatabaseManager;
 import com.ankares.ankareswarps.manager.PlayerDataManager;
 import com.ankares.ankareswarps.manager.TableCreator;
@@ -25,6 +26,7 @@ public final class WarpPlugin extends JavaPlugin {
     private TableCreator tableCreator;
     private PlayerDataManager playerDataManager;
     private PlayerDataCache playerDataCache;
+    private CooldownManager cooldownManager;
 
     @Override
     public void onEnable() {
@@ -44,6 +46,7 @@ public final class WarpPlugin extends JavaPlugin {
     private void injectClasses() {
         playerDataCache = new PlayerDataCacheProvider();
         playerDataManager = new PlayerDataManager(databaseManager.getDataSource(), playerDataCache);
+        cooldownManager = new CooldownManager(3);
         FastInvManager.register(this);
     }
 
@@ -75,7 +78,9 @@ public final class WarpPlugin extends JavaPlugin {
 
     private void createTables() {
         tableCreator = new TableCreator(this);
-        tableCreator.createTable("player_data", "(id INT AUTO_INCREMENT PRIMARY KEY, player_name VARCHAR(255), warp_name TEXT, save_date TIMESTAMP NOT NULL, data TEXT)");
+        tableCreator.createTable(
+                "player_data",
+                "(id INT AUTO_INCREMENT PRIMARY KEY, player_name VARCHAR(255), warp_name TEXT, save_date TIMESTAMP NOT NULL, data TEXT)");
     }
 
     private void initializeCommands() {

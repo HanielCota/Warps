@@ -16,7 +16,8 @@ public class TableCreator {
     }
 
     public void createTable(String tableName, String createTableQuery) {
-        try (Connection connection = plugin.getDatabaseManager().getConnection(); Statement statement = connection.createStatement()) {
+        try (Connection connection = plugin.getDatabaseManager().getConnection();
+                Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS " + tableName + " " + createTableQuery;
             int result = statement.executeUpdate(query);
 

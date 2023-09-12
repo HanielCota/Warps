@@ -23,7 +23,6 @@ public class PlayerDataManager implements PlayerDataRepository {
     private final HikariDataSource dataSource;
     private final PlayerDataCache playerDataCache;
 
-
     public PlayerDataManager(HikariDataSource dataSource, PlayerDataCache playerDataCache) {
         this.dataSource = dataSource;
         this.playerDataCache = playerDataCache;
@@ -35,7 +34,9 @@ public class PlayerDataManager implements PlayerDataRepository {
             return true;
         }
 
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM player_data WHERE player_name = ?")) {
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement("SELECT COUNT(*) FROM player_data WHERE player_name = ?")) {
             statement.setString(1, playerName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -75,7 +76,6 @@ public class PlayerDataManager implements PlayerDataRepository {
         }
     }
 
-
     public void savePlayerFavoriteWarpWithDate(String playerName, String warpName, String dateString) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -84,7 +84,8 @@ public class PlayerDataManager implements PlayerDataRepository {
             Date date = dateFormat.parse(dateString);
 
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement("INSERT INTO player_data (player_name, warp_name, save_date) VALUES (?, ?, ?)")) {
+                    PreparedStatement statement = connection.prepareStatement(
+                            "INSERT INTO player_data (player_name, warp_name, save_date) VALUES (?, ?, ?)")) {
 
                 statement.setString(1, playerName);
                 statement.setString(2, warpName);
@@ -101,12 +102,11 @@ public class PlayerDataManager implements PlayerDataRepository {
         }
     }
 
-
     public Date getPlayerFavoriteWarpSaveDate(String playerName, String warpName) {
         String query = "SELECT DATE(save_date) FROM player_data WHERE player_name = ? AND warp_name = ?";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, playerName);
             statement.setString(2, warpName);
 
@@ -146,14 +146,15 @@ public class PlayerDataManager implements PlayerDataRepository {
         }
     }
 
-
     public String getPlayerData(String playerName) {
         String cachedData = playerDataCache.getIfPresent(playerName);
         if (cachedData != null) {
             return cachedData;
         }
 
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT data FROM player_data WHERE player_name = ?")) {
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement("SELECT data FROM player_data WHERE player_name = ?")) {
             statement.setString(1, playerName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -181,7 +182,6 @@ public class PlayerDataManager implements PlayerDataRepository {
         }
     }
 
-
     public void addPlayerFavoriteWarp(String playerName, String warpName) {
         try (Connection connection = dataSource.getConnection()) {
             String query = "INSERT INTO player_data (player_name, warp_name) VALUES (?, ?)";
@@ -199,7 +199,9 @@ public class PlayerDataManager implements PlayerDataRepository {
         // No need to cache this result as it may change frequently
         List<String> favoriteWarps = new ArrayList<>();
 
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT warp_name FROM player_data WHERE player_name = ?")) {
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement("SELECT warp_name FROM player_data WHERE player_name = ?")) {
             statement.setString(1, playerName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -214,9 +216,10 @@ public class PlayerDataManager implements PlayerDataRepository {
         return favoriteWarps;
     }
 
-
     public int getPlayerFavoriteWarpsCount(String playerName) {
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM player_data WHERE player_name = ?")) {
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement("SELECT COUNT(*) FROM player_data WHERE player_name = ?")) {
             statement.setString(1, playerName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {

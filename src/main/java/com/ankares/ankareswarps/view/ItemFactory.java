@@ -1,6 +1,5 @@
 package com.ankares.ankareswarps.view;
 
-
 import com.ankares.ankareswarps.WarpPlugin;
 import com.ankares.ankareswarps.utils.ItemBuilder;
 import com.ankares.ankareswarps.view.enums.WarpViewLocations;
@@ -46,7 +45,8 @@ public class ItemFactory {
     public ItemStack createInformationButton() {
         return new ItemBuilder(Material.WRITABLE_BOOK)
                 .setName("§eInformações")
-                .setLore("§7Caso ainda não tenha selecionado nenhuma warp favorita,",
+                .setLore(
+                        "§7Caso ainda não tenha selecionado nenhuma warp favorita,",
                         "§7Três barreiras estarão disponíveis ao lado.",
                         "",
                         "§7No ícone de configurações, você pode selecionar até 3 warps.",
@@ -83,7 +83,9 @@ public class ItemFactory {
         return new ItemBuilder(Material.PLAYER_HEAD)
                 .setSkullOwner(player.getName())
                 .setName("§aSuas Vantagens")
-                .setLore("§7Total de Favoritos: " + playerFavoriteWarpsCount + "/3", "§7Moedas ao usar warps favoritas: §e30 §7coins.")
+                .setLore(
+                        "§7Total de Favoritos: " + playerFavoriteWarpsCount + "/3",
+                        "§7Moedas ao usar warps favoritas: §e30 §7coins.")
                 .build();
     }
 
@@ -103,7 +105,8 @@ public class ItemFactory {
      * @return The created ItemStack.
      */
     public ItemStack createWarpItem(WarpViewLocations warp) {
-        String locationName = warp.getLocationName().substring(0, 1).toUpperCase() + warp.getLocationName().substring(1).toLowerCase();
+        String locationName = warp.getLocationName().substring(0, 1).toUpperCase()
+                + warp.getLocationName().substring(1).toLowerCase();
 
         return new ItemBuilder(warp.getSkullIcon())
                 .setName(ChatColor.GREEN + locationName)

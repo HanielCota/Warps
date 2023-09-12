@@ -115,7 +115,6 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder addEnchant(Enchantment enchantment, int level) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.addEnchant(enchantment, level, true);
@@ -152,14 +151,11 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder replaceLore(String key, String value) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = itemMeta.getLore();
         if (lore != null) {
-            lore = lore.stream()
-                    .map(line -> line.replace(key, value))
-                    .toList();
+            lore = lore.stream().map(line -> line.replace(key, value)).toList();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
         }
@@ -266,7 +262,6 @@ public class ItemBuilder {
         }
         return this;
     }
-
 
     public ItemBuilder setSkull(String url) {
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();

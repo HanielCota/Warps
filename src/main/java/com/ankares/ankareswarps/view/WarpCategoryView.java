@@ -30,7 +30,10 @@ public class WarpCategoryView extends FastInv {
         ItemFactory itemFactory = new ItemFactory(plugin);
         ItemClickHandler itemClickHandler = new ItemClickHandler(plugin, this);
 
-        setItem(49, itemFactory.createBackButton(), click -> click.getInventory().close());
+        setItem(49, itemFactory.createBackButton(), click -> {
+            player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_DOOR_OPEN, 10f, 1f);
+            click.getInventory().close();
+        });
 
         setItem(24, itemFactory.createConfigButton(), click -> {
             player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_DOOR_OPEN, 10f, 1f);
@@ -64,13 +67,11 @@ public class WarpCategoryView extends FastInv {
             slot++;
         }
 
-        // Fill unoccupied slots with barrier items
         while (slot <= 21) {
             setItem(slot, itemFactory.createBarrierItem());
             slot++;
         }
     }
-
 
     /**
      * Capitalize the first letter of a string.

@@ -44,6 +44,11 @@ public class WarpView extends FastInv {
 
             setItem(slot, warpItem, click -> {
                 if (!click.isShiftClick()) {
+                    if (plugin.getCooldownManager().tryUse(player)) {
+                        player.sendMessage("§cEspere um momento antes de usar esta warp novamente.");
+                        return;
+                    }
+                    player.sendMessage("§aVocê foi teleportado para " + warp.getLocationName() + ".");
                     handleWarpItemClick(player, location);
                     return;
                 }
@@ -57,7 +62,8 @@ public class WarpView extends FastInv {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String dateString = dateFormat.format(new Date());
 
-                plugin.getPlayerDataManager().savePlayerFavoriteWarpWithDate(player.getName(), warp.getLocationName(), dateString);
+                plugin.getPlayerDataManager()
+                         .savePlayerFavoriteWarpWithDate(player.getName(), warp.getLocationName(), dateString);
                 player.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 10f, 1f);
                 player.sendMessage("§aWarp " + warp.getLocationName() + " adicionada aos favoritos com sucesso!");
             });
@@ -85,5 +91,6 @@ public class WarpView extends FastInv {
 
     private void handleWarpItemClick(Player player, Location location) {
         player.teleportAsync(location);
+        plugin.getCooldownManager().setCooldown(player);
     }
 }

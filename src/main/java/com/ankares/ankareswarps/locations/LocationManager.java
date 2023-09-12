@@ -98,4 +98,3 @@ public class LocationManager {
         plugin.getWarpConfig().save();
     }
 }
-

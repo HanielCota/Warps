@@ -1,6 +1,5 @@
 package com.ankares.ankareswarps.view;
 
-
 import com.ankares.ankareswarps.WarpPlugin;
 import com.ankares.ankareswarps.utils.ItemBuilder;
 import com.ankares.ankareswarps.view.enums.WarpViewLocations;
@@ -31,12 +30,24 @@ public class ItemClickHandler {
         ItemStack itemStack = new ItemBuilder(Material.PLAYER_HEAD)
                 .setSkull(warpLocation.getSkullIcon())
                 .setName("§a" + WarpCategoryView.capitalizeFirstLetter(warpLocation.getLocationName()))
-                .setLore("§7Você selecionou esta warp como favorita.", "", "§7Salvo em: " + plugin.getPlayerDataManager().getPlayerFavoriteWarpSaveDate(player.getName(), warpLocation.getLocationName()), "§fClique com o §eSHIFT + CLICK ESQUERDO §fpara remover.")
+                .setLore(
+                        "§7Você selecionou esta warp como favorita.",
+                        "",
+                        "§7Salvo em: "
+                                + plugin.getPlayerDataManager()
+                                .getPlayerFavoriteWarpSaveDate(
+                                        player.getName(), warpLocation.getLocationName()),
+                        "§fClique com o §eSHIFT + CLICK ESQUERDO §fpara remover.")
                 .build();
 
         warpCategoryView.setItem(slot, itemStack, click -> {
             if (click.isShiftClick()) {
                 handleShiftClick(player, warpLocation);
+                return;
+            }
+
+            if (!plugin.getCooldownManager().tryUse(player)) {
+                player.sendMessage("§cEspere um momento antes de usar esta warp novamente.");
                 return;
             }
 
@@ -54,13 +65,13 @@ public class ItemClickHandler {
 
         player.teleportAsync(location);
         player.sendMessage("§aVocê foi teleportado para " + warpName + ".");
+        plugin.getCooldownManager().setCooldown(player);
     }
 
     private void handleShiftClick(Player player, WarpViewLocations warpLocation) {
         plugin.getPlayerDataManager().removePlayerFavoriteWarp(player.getName(), warpLocation.getLocationName());
 
         player.sendMessage("§aWarp favorita removida: " + warpLocation.getLocationName());
-
         warpCategoryView.initializeItems(player);
         new WarpCategoryView(player, plugin).open(player);
     }

@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,8 +53,7 @@ public class ConfigUtils extends FileConfiguration {
         this.name = name;
 
         File directory = new File(owningPlugin.getDataFolder(), root);
-        if (!directory.exists())
-            directory.mkdirs();
+        if (!directory.exists()) directory.mkdirs();
 
         File file = new File(directory, name);
         file.createNewFile();
@@ -221,7 +221,9 @@ public class ConfigUtils extends FileConfiguration {
     }
 
     public List<String> getStringList(String s) {
-        return this.configuration.getStringList(s).stream().map($ -> $.replace("&", "§")).collect(Collectors.toList());
+        return this.configuration.getStringList(s).stream()
+                .map($ -> $.replace("&", "§"))
+                .collect(Collectors.toList());
     }
 
     public ConfigurationSection getConfigurationSection(String s) {
@@ -303,9 +305,8 @@ public class ConfigUtils extends FileConfiguration {
     public void saveWithComments() {
         final String text;
         try {
-            text = new String(ByteStreams.toByteArray(
-                    Files.newInputStream(rootFile.toPath())), Charset.defaultCharset()
-            );
+            text = new String(
+                    ByteStreams.toByteArray(Files.newInputStream(rootFile.toPath())), Charset.defaultCharset());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -338,13 +339,14 @@ public class ConfigUtils extends FileConfiguration {
     }
 
     public String getString(String s) {
-        return this.configuration.getString(s).replace("&", "§");
+        return Objects.requireNonNull(this.configuration.getString(s)).replace("&", "§");
     }
 
     public boolean isString(String s) {
         return this.configuration.isString(s);
     }
 
+    @Override
     public List<Boolean> getBooleanList(String s) {
         return this.configuration.getBooleanList(s);
     }

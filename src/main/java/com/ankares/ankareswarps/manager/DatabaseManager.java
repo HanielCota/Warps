@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 @Getter
 public class DatabaseManager implements AutoCloseable {
+
     private final HikariDataSource dataSource;
 
     public DatabaseManager(String jdbcUrl, String username, String password) {
