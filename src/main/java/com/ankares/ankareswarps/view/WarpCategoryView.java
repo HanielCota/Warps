@@ -43,7 +43,15 @@ public class WarpCategoryView extends FastInv {
         setItem(33, itemFactory.createInformationButton());
 
         setItem(42, itemFactory.createDestructionButton(), click -> {
+            List<String> favoriteWarps = plugin.getPlayerDataManager().getPlayerFavoriteWarps(player.getName());
+
+            if (favoriteWarps.isEmpty()) {
+                player.sendMessage("§cVocê não tem warps favoritas para remover.");
+                return;
+            }
+
             plugin.getPlayerDataManager().removeAllPlayerFavoriteWarps(player.getName());
+
             initializeItems(player);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10f, 1f);
             player.sendMessage("§aVocê removeu todas as suas warps favoritas.");

@@ -35,8 +35,8 @@ public class ItemClickHandler {
                         "",
                         "§7Salvo em: "
                                 + plugin.getPlayerDataManager()
-                                .getPlayerFavoriteWarpSaveDate(
-                                        player.getName(), warpLocation.getLocationName()),
+                                        .getPlayerFavoriteWarpSaveDate(
+                                                player.getName(), warpLocation.getLocationName()),
                         "§fClique com o §eSHIFT + CLICK ESQUERDO §fpara remover.")
                 .build();
 

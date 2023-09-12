@@ -56,23 +56,18 @@ public class LocationManager {
         double x = locationSection.getDouble("x");
         double y = locationSection.getDouble("y");
         double z = locationSection.getDouble("z");
+        float pitch = (float) locationSection.getDouble("pitch", 0.0);
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             return null;
         }
 
-        location = new Location(world, x, y, z);
+        location = new Location(world, x, y, z, 0, pitch);
 
         locationRepository.saveLocation(name, location);
 
         return location;
-    }
-
-    public void updateLocation(String locationName, Location location) {
-        locationRepository.updateLocation(locationName, location);
-
-        saveLocationToConfig(locationName, location);
     }
 
     public List<String> getAvailableWarps() {
@@ -95,6 +90,7 @@ public class LocationManager {
         locationSection.set("x", location.getX());
         locationSection.set("y", location.getY());
         locationSection.set("z", location.getZ());
+        locationSection.set("pitch", location.getPitch());
         plugin.getWarpConfig().save();
     }
 }

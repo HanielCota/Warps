@@ -33,9 +33,13 @@ public class ItemFactory {
      * Create a config button ItemStack.
      */
     public ItemStack createConfigButton() {
-        return new ItemBuilder(Material.COMPARATOR)
-                .setName("§aConfigurações")
-                .setLore("§7Personalize suas preferências de acordo com o seu estilo.")
+        return new ItemBuilder(Material.GRASS_BLOCK)
+                .setName("§aWarps")
+                .setLore(
+                        "§7Utilize para locomover-se mais rápido",
+                        "§7e salve as favoritas.",
+                        "",
+                        "§7Assim, ganhando recompensas por isso.")
                 .build();
     }
 
@@ -46,13 +50,16 @@ public class ItemFactory {
         return new ItemBuilder(Material.WRITABLE_BOOK)
                 .setName("§eInformações")
                 .setLore(
-                        "§7Caso ainda não tenha selecionado nenhuma warp favorita,",
+                        "§7Caso ainda não tenha selecionado",
+                        "§7Nenhuma warp favorita,",
                         "§7Três barreiras estarão disponíveis ao lado.",
                         "",
-                        "§7No ícone de configurações, você pode selecionar até 3 warps.",
+                        "§7No ícone de configurações,",
+                        "§7Você pode selecionar até 3 warps.",
                         "",
                         "§7Como favoritas usando o §eShift + Clique esquerdo§7.",
-                        "§7Ao teleportar para uma de suas warps favoritas através do menu,",
+                        "§7Ao teleportar para uma de suas warps",
+                        "§7Favoritas através do menu,",
                         "§7Você receberá bônus exclusivos.",
                         "",
                         "§7Se não desejar adicionar favoritas,",
