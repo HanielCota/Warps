@@ -57,18 +57,20 @@ public class LocationManager {
         double y = locationSection.getDouble("y");
         double z = locationSection.getDouble("z");
         float pitch = (float) locationSection.getDouble("pitch", 0.0);
+        float yaw = (float) locationSection.getDouble("yaw", 0.0); // Obtém o valor do ângulo de rotação (yaw)
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             return null;
         }
 
-        location = new Location(world, x, y, z, 0, pitch);
+        location = new Location(world, x, y, z, yaw, pitch); // Define o yaw ao criar a localização
 
         locationRepository.saveLocation(name, location);
 
         return location;
     }
+
 
     public List<String> getAvailableWarps() {
         List<String> availableWarps = new ArrayList<>();
@@ -91,6 +93,7 @@ public class LocationManager {
         locationSection.set("y", location.getY());
         locationSection.set("z", location.getZ());
         locationSection.set("pitch", location.getPitch());
+        locationSection.set("yaw", location.getYaw());
         plugin.getWarpConfig().save();
     }
 }

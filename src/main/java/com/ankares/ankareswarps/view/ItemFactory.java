@@ -34,7 +34,7 @@ public class ItemFactory {
      */
     public ItemStack createConfigButton() {
         return new ItemBuilder(Material.GRASS_BLOCK)
-                .setName("§aWarps")
+                .setName("§aSeleção de Warps")
                 .setLore(
                         "§7Utilize para locomover-se mais rápido",
                         "§7e salve as favoritas.",

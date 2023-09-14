@@ -30,7 +30,7 @@ public class WarpCommand extends BaseCommand {
             return;
         }
 
-        player.teleport(location);
+        player.teleportAsync(location);
         player.sendMessage("§aVocê foi teleportado para " + locationName + ".");
     }
 }
