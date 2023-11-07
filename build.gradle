@@ -28,7 +28,7 @@ dependencies {
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
 
     //database mysql
-    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'com.zaxxer:HikariCP:5.1.0'
 
     //caffeine cache
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
